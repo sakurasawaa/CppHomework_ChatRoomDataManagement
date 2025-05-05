@@ -1,0 +1,13 @@
+extern void listUsers();
+extern void listGroups();
+extern void listMessage();
+extern void createUser();
+extern void selectUserID();
+extern void deleteUser();
+extern void changeName();
+extern void changePasswd();
+extern void listUser();
+extern void addFriend();
+extern void deleteFriend();
+extern void addGroup();
+extern void deleteGroup();
