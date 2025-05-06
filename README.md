@@ -1,5 +1,5 @@
 # CppHomework_ChatRoomDataManagement
-## 环境配置
+## 环境配置(Linux/WSL2: Ubuntu 24.04 LTS)
 ```sh
 sudo bash env_config.sh
 ```
