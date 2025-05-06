@@ -88,12 +88,13 @@ int User::signin() {
             oss << "CREATE TABLE " << id << "_userData (object INT, is_group tinyint, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             stmt->executeUpdate(oss.str());
         }
+        return id;
     }
     return 0;
 }
 int User::signin(int passwd) {
     std::ostringstream oss;
-    if (id) std::cout << "Users exist!" << std::endl;
+    if (id) std::clog << "[System]Users exist! UID:" << id << std::endl;
     else {
         prep_stmt = con->prepareStatement("INSERT INTO users (name, password) VALUES (?, ?)");
         prep_stmt->setString(1, name);
@@ -108,6 +109,7 @@ int User::signin(int passwd) {
             oss << "CREATE TABLE " << id << "_userData (object INT, is_group tinyint, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             stmt->executeUpdate(oss.str());
         }
+        return id;
     }
     return 0;
 }
@@ -157,12 +159,16 @@ bool User::groupExist(int gid) {
 int User::createGroup(std::string gname) {
     if (!id) return 1;
     std::ostringstream oss;
-    int gid;
-    oss << "SELECT 1 FROM `groups` WHERE name = '" << gname << "' LIMIT 1";
-    std::cout << oss.str() << std::endl;
+    int gid = 0;
+    oss << "SELECT id FROM `groups` WHERE name = '" << gname << "' LIMIT 1";
+    // std::cout << oss.str() << std::endl;
     stmt = con->createStatement();
     res = stmt->executeQuery(oss.str());
-    if (res->next()) std::clog << "[" << id << "]Groups exist!" << std::endl;
+    if (res->next()) {
+        gid = res->getInt("id");
+        std::clog << "[System]Groups exist! GID:" << gid << std::endl;
+        return 0;
+    }
     else {
         prep_stmt = con->prepareStatement("INSERT INTO `groups` (name, create_by) VALUES (?, ?)");
         prep_stmt->setString(1, gname);
@@ -172,13 +178,11 @@ int User::createGroup(std::string gname) {
         res = prep_stmt->executeQuery();
         if (res->next()) {
             gid = res->getInt(1);
-            std::cout << "GID: " << gid << std::endl;
             addGroup(gid);
+            std::clog << "[System]Group created GID:" << gid << std::endl;
         }
-        
+        return gid;
     }
-    
-    return 0;
 }
 
 int User::addFriend(int uid) {

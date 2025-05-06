@@ -57,12 +57,14 @@ void listMessage() {
     return ;
 }
 void createUser() {
+    int uid;
     std::string username;
     std::cout << "Username: ";
     std::cin >> username;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     User user(username);
-    user.signin();
+    if ((uid = user.signin())) std::cout << "User created! UID:" << uid << std::endl;
+    else std::cout << "User exist! UID:" << user.getUserID() << std::endl;
     return ;
 }
 void selectUserID() {
@@ -185,6 +187,24 @@ void addGroup() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (!user.addGroup(gid)) std::cout << "Group added!" << std::endl;
         else std::cout << "Error! or Group not exist!" << std::endl;
+    }
+    else std::cout << "User not exist!" << std::endl;
+}
+
+void createGroup() {
+    int uid;
+    int gid;
+    std::string gname;
+    std::cout << "UserID: ";
+    std::cin >> uid;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    User user(uid);
+    if (user.getUserID()) {
+        std::cout << "GroupName: ";
+        std::cin >> gname;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if ((gid = user.createGroup(gname))) std::cout << "[System]Group created! GID:" << gid << std::endl;
+        else std::cout << "Error!" << std::endl;
     }
     else std::cout << "User not exist!" << std::endl;
 }

@@ -10,5 +10,6 @@ extern void listUser();
 extern void addFriend();
 extern void deleteFriend();
 extern void addGroup();
+extern void createGroup();
 extern void deleteGroup();
 extern void removeGroup();
