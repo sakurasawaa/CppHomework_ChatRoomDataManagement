@@ -4,6 +4,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/exception.h>
 
+#define DB_CON "tcp://0.0.0.0:3306"
 #define DB_NAME "ChatRoom"
 #define DB_USER "chatroom"
 #define DB_PASS "chatroom"
@@ -14,8 +15,8 @@ sql::Connection *con;
 int conToSql() {
     try {
         driver = sql::mysql::get_mysql_driver_instance();
-        con = driver->connect("tcp://0.0.0.0:3306", "root", "12345678");
-        con->setSchema("DATA");
+        con = driver->connect(DB_CON, DB_USER, DB_PASS);
+        con->setSchema(DB_NAME);
     }
     catch (const sql::SQLException &e) {
         std::cerr << "Error: " << e.what() << std::endl;
