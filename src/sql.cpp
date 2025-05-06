@@ -4,6 +4,10 @@
 #include <cppconn/resultset.h>
 #include <cppconn/exception.h>
 
+#define DB_NAME "ChatRoom"
+#define DB_USER "chatroom"
+#define DB_PASS "chatroom"
+
 sql::mysql::MySQL_Driver *driver;
 sql::Connection *con;
 
