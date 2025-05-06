@@ -11,6 +11,7 @@ class User
         int signout();
         int createGroup(std::string);
         int deleteGroup(int);
+        int removeGroup(int);
         int addFriend(int);
         int deleteFriend(int);
         int addGroup(int);
@@ -82,7 +83,7 @@ int User::signin() {
         res = prep_stmt->executeQuery();
         if (res->next()) {
             id = res->getInt(1);
-            std::cout << "UserID: " << id << std::endl;
+            std::clog << "[System]Signin::UserID: " << id << std::endl;
             oss.str("");
             oss << "CREATE TABLE " << id << "_userData (object INT, is_group tinyint, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             stmt->executeUpdate(oss.str());
@@ -102,7 +103,7 @@ int User::signin(int passwd) {
         res = prep_stmt->executeQuery();
         if (res->next()) {
             id = res->getInt(1);
-            std::cout << "UserID: " << id << std::endl;
+            std::clog << "[System]Signin::UserID: " << id << std::endl;
             oss.str("");
             oss << "CREATE TABLE " << id << "_userData (object INT, is_group tinyint, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
             stmt->executeUpdate(oss.str());
@@ -130,7 +131,7 @@ bool User::iExist() {
     res = prep_stmt->executeQuery();
     if (res->next()) return true;
     else{
-        std::cout << "User not exist" << std::endl;
+        std::clog << "[System]User profile not exist:" << std::endl;
         return false;
     }
 }
@@ -161,7 +162,7 @@ int User::createGroup(std::string gname) {
     std::cout << oss.str() << std::endl;
     stmt = con->createStatement();
     res = stmt->executeQuery(oss.str());
-    if (res->next()) std::cout << "Groups exist!" << std::endl;
+    if (res->next()) std::clog << "[" << id << "]Groups exist!" << std::endl;
     else {
         prep_stmt = con->prepareStatement("INSERT INTO `groups` (name, create_by) VALUES (?, ?)");
         prep_stmt->setString(1, gname);
@@ -199,11 +200,11 @@ int User::deleteFriend(int uid) {
     prep_stmt->setInt(1, uid);
     if (prep_stmt->executeUpdate())
     {
-        std::cout << "Friend deleted: " << uid << std::endl;
+        std::clog << "[" << id << "]Friend deleted: " << uid << std::endl;
         return 0;
     } 
     else {
-        std::cout << "Friend not exist!" << std::endl;
+        std::clog << "[" << id << "]Friend not exist!" << std::endl;
         return 1;
     }
 }
@@ -228,13 +229,33 @@ int User::deleteGroup(int gid) {
     prep_stmt->setInt(1, gid);
     if (prep_stmt->executeUpdate())
     {
-        std::cout << "Group deleted: " << gid << std::endl;
+        std::clog << "[User]Group deleted: " << gid << std::endl;
         return 0;
     } 
     else {
-        std::cout << "Group not exist!" << std::endl;
+        std::clog << "[User]Group not exist!" << std::endl;
         return 1;
     }
+}
+
+int User::removeGroup(int gid) {
+    std::ostringstream oss;
+    prep_stmt = con->prepareStatement("SELECT 1 FROM `groups` WHERE id = ? AND create_by = ? LIMIT 1");
+    prep_stmt->setInt(1, gid);
+    prep_stmt->setInt(2, id);
+    res = prep_stmt->executeQuery();
+    if (res->next()) {
+        prep_stmt = con->prepareStatement("DELETE FROM `groups` WHERE id = ?");
+        prep_stmt->setInt(1, gid);
+        prep_stmt->executeUpdate();
+        std::clog << "[System]Group deleted: " << gid << std::endl;
+        return 0;
+    }
+    else {
+        std::clog << "[System]Permission denied!";
+        return 1;
+    }
+
 }
 
 

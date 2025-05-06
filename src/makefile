@@ -5,7 +5,7 @@ LDFLAGS = -lmysqlcppconn
 SRC = $(wildcard *.cpp)
 OBJ = $(SRC:%.cpp=../build/%.o)
 # BASENAMES = $(basename $(OBJ))
-TARGET = ../bin/main
+TARGET = ../bin/ChatRoomDataManagement
 
 all: $(TARGET)
 	echo $(OBJ)

@@ -11,3 +11,4 @@ extern void addFriend();
 extern void deleteFriend();
 extern void addGroup();
 extern void deleteGroup();
+extern void removeGroup();

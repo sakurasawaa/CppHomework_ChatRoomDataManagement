@@ -205,3 +205,27 @@ void deleteGroup() {
     }
     else std::cout << "User not exist!" << std::endl;
 }
+
+void removeGroup() {
+    int uid;
+    int gid;
+    std::cout << "UserID: ";
+    std::cin >> uid;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    User user(uid);
+    if (user.getUserID()) {
+        std::cout << "GroupID: ";
+        std::cin >> gid;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (!user.removeGroup(gid)) std::cout << "Group deleted!" << std::endl;
+        else std::cout << "Error! or Group not exist!" << std::endl;
+    }
+    else {
+        std::cout << "User not exist!" << std::endl;
+        sql::PreparedStatement *pre_stmt;
+        pre_stmt = con->prepareStatement("DELETE FROM `groups` WHERE create_by = ?");
+        pre_stmt->setInt(1, uid);
+        pre_stmt->executeUpdate();
+        std::clog << "[System]Clean Groups::UserID:" << uid << std::endl; 
+    }
+}

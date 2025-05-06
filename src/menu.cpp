@@ -24,6 +24,7 @@ int menu() {
     
 
     FuncMenu GroupsData_listGroups(GroupsData, "listGroups", listGroups);
+    FuncMenu GroupsData_removeGroup(GroupsData, "removeGroup", removeGroup);
 
     FuncMenu MessageData_listMessage(MessageData, "listMessage", listMessage);
     
