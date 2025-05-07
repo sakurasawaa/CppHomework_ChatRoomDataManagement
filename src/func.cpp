@@ -48,10 +48,10 @@ void listMessage() {
     while (res->next()) {
         str.push_back(res->getString("Field"));
     }
-    print.setHeaders(str[0], str[1], str[2], str[3]);
+    print.setHeaders(str[0], str[1], str[2], str[3], str[4]);
     res = stmt->executeQuery("SELECT * FROM message");
     while (res->next()) {
-        print.addRow(res->getInt("target"), res->getString("string"), res->getInt("is_group"), res->getString("time"));
+        print.addRow(res->getInt("target"), res->getString("string"), res->getInt("source") ,res->getInt("is_group"), res->getString("time"));
     }
     print.print();
     return ;
