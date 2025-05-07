@@ -40,18 +40,18 @@ class MainMenu : public BaseMenu, protected Print {
 skip:
             std::cout << "input> " ;
             std::cin >> choice;
-            if (std::cin.fail()) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                goto skip;
-            }
-            choice -= 1;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             if (std::cin.eof()) {
                 choice = EXIT;
                 // std::cin.clear();
                 return;
             }
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                goto skip;
+            }
+            choice -= 1;
             if (choice == RETURN) return;
             if (!(choice >= 0 && choice < static_cast<int>(subMenus.size()))) {
                 std::cout << "No matching input !" <<std::endl;
