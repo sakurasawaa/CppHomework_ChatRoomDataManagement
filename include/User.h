@@ -7,7 +7,7 @@ class User
 {
     public:
         int signin();
-        int signin(int);
+        int signin(std::string);
         int signout();
         int createGroup(std::string);
         int deleteGroup(int);
@@ -68,7 +68,7 @@ User::~User() {
 }
 
 
-int User::signin() {
+int User::signin() { //废弃
     std::ostringstream oss;
     if (id) std::cout << "Users exist!" << std::endl;
     else {
@@ -92,13 +92,13 @@ int User::signin() {
     }
     return 0;
 }
-int User::signin(int passwd) {
+int User::signin(std::string passwd) {
     std::ostringstream oss;
     if (id) std::clog << "[System]Users exist! UID:" << id << std::endl;
     else {
         prep_stmt = con->prepareStatement("INSERT INTO users (name, password) VALUES (?, ?)");
         prep_stmt->setString(1, name);
-        prep_stmt->setInt(2, passwd);
+        prep_stmt->setString(2, passwd);
         prep_stmt->executeUpdate();
         prep_stmt = con->prepareStatement("SELECT LAST_INSERT_ID()");
         res = prep_stmt->executeQuery();

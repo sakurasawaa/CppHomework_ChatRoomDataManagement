@@ -63,7 +63,14 @@ void createUser() {
     std::cin >> username;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     User user(username);
-    if ((uid = user.signin())) std::cout << "User created! UID:" << uid << std::endl;
+    if (!(uid = user.getUserID())) {
+        std::string passwd;
+        std::cout << "Passwd: ";
+        std::cin >> passwd;
+        user.signin(passwd);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "User created! UID:" << user.getUserID() << std::endl;
+    }
     else std::cout << "User exist! UID:" << user.getUserID() << std::endl;
     return ;
 }
