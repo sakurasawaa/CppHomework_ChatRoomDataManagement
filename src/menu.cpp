@@ -28,6 +28,8 @@ int menu() {
     FuncMenu GroupsData_removeGroup(GroupsData, "removeGroup", removeGroup);
 
     FuncMenu MessageData_listMessage(MessageData, "listMessage", listMessage);
+    FuncMenu MessageData_test_sendToUser(MessageData, "test_sendToUser", test_sendToUser);
+    FuncMenu MessageData_test_sendToGroup(MessageData, "test_sendToGroup", test_sendToGroup);
     
     menu.run();
     return 0;

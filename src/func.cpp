@@ -256,3 +256,44 @@ void removeGroup() {
         std::clog << "[System]Clean Groups::UserID:" << uid << std::endl; 
     }
 }
+
+extern void test_sendToUser() {
+    int uid;
+    int tid;
+    std::cout << "UserID: ";
+    std::cin >> uid;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    User user(uid);
+    if (user.getUserID()) {
+        std::cout << "TargetUserID: ";
+        std::cin >> tid;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::string string;
+        std::cout << "Message: ";
+        std::getline(std::cin, string);
+        user.sendToUser(tid, string);
+    }
+    else {
+        std::cout << "User not exist!" << std::endl;
+    }
+}
+extern void test_sendToGroup() {
+    int uid;
+    int tid;
+    std::cout << "UserID: ";
+    std::cin >> uid;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    User user(uid);
+    if (user.getUserID()) {
+        std::cout << "TargetGroupID: ";
+        std::cin >> tid;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::string string;
+        std::cout << "Message: ";
+        std::getline(std::cin, string);
+        user.sendToGroup(tid, string);
+    }
+    else {
+        std::cout << "User not exist!" << std::endl;
+    }
+}

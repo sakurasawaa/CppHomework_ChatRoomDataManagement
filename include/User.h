@@ -19,8 +19,8 @@ class User
         int changePasswd(std::string);
         int getUserID();
         std::string getUserNmae();
-        int sendToUser();
-        int sendToGroup();
+        int sendToUser(int, std::string);
+        int sendToGroup(int, std::string);
         User(int);
         User(std::string);
         ~User();
@@ -287,4 +287,30 @@ int User::getUserID() {
 
 std::string User::getUserNmae() {
     return name;
+}
+
+int User::sendToUser(int target, std::string string) {
+    if (!iExist() || !userExist(target)) return 1;
+    std::ostringstream oss;
+    oss << "INSERT INTO message (target, `string`, source, is_group) VALUES (?, ?, ?, 0)";
+    // std::cout << oss.str() << std::endl;
+    prep_stmt = con->prepareStatement(oss.str());
+    prep_stmt->setInt(1, target);
+    prep_stmt->setString(2, string);
+    prep_stmt->setInt(3, id);
+    prep_stmt->executeUpdate();
+    return 0;
+}
+int User::sendToGroup(int target, std::string string) {
+    if (!iExist() || !groupExist(target)) return 1;
+    std::ostringstream oss;
+    oss << "INSERT INTO message (target, `string`, source, is_group) VALUES (?, ?, ?, 1)";
+    // std::cout << oss.str() << std::endl;
+    prep_stmt = con->prepareStatement(oss.str());
+    prep_stmt->setInt(1, target);
+    prep_stmt->setString(2, string);
+    prep_stmt->setInt(3, id);
+    prep_stmt->executeUpdate();
+
+    return 0;
 }

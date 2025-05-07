@@ -13,3 +13,5 @@ extern void addGroup();
 extern void createGroup();
 extern void deleteGroup();
 extern void removeGroup();
+extern void test_sendToUser();
+extern void test_sendToGroup();
