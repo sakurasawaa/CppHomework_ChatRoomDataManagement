@@ -26,6 +26,8 @@ class User
         ~User();
     protected:
         bool iExist();
+        bool iuserExist(int);
+        bool igroupExist(int);
         bool userExist(int);
         bool groupExist(int);
     private:
@@ -137,6 +139,20 @@ bool User::iExist() {
         return false;
     }
 }
+bool User::iuserExist(int uid) {
+    std::ostringstream oss;
+    oss << "SELECT 1 FROM " << id << "_userData users WHERE id = '" << uid << "' AND is_group = '0' LIMIT 1";
+    prep_stmt = con->prepareStatement(oss.str());
+    if(prep_stmt->executeUpdate()) return true;
+    else return false;
+}
+bool User::igroupExist(int gid) {
+    std::ostringstream oss;
+    oss << "SELECT 1 FROM " << id << "_userData users WHERE id = '" << gid << "' AND is_group = '1' LIMIT 1";
+    prep_stmt = con->prepareStatement(oss.str());
+    if(prep_stmt->executeUpdate()) return true;
+    else return false;
+}
 bool User::userExist(int uid) {
     std::ostringstream oss;
     oss << "SELECT 1 FROM `users` WHERE id = '" << uid << "' LIMIT 1";
@@ -186,7 +202,7 @@ int User::createGroup(std::string gname) {
 }
 
 int User::addFriend(int uid) {
-    if (!iExist() || !userExist(uid)) return 1;
+    if (!iExist() || !userExist(uid) || !iuserExist(uid)) return 1;
     std::ostringstream oss;
     oss << "INSERT INTO " << id << "_userData (object, is_group) VALUES (?, ?)";
     std::cout << oss.str() << std::endl;
@@ -214,7 +230,7 @@ int User::deleteFriend(int uid) {
 }
 
 int User::addGroup(int gid) {
-    if (!iExist() || !groupExist(gid)) return 1;
+    if (!iExist() || !groupExist(gid) || !igroupExist(gid)) return 1;
     std::ostringstream oss;
     oss << "INSERT INTO " << id << "_userData (object, is_group) VALUES (?, ?)";
     std::cout << oss.str() << std::endl;
